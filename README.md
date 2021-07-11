@@ -7,7 +7,7 @@
 - DB
   - docker(mysql), h2
 - CI/CD
-  - Docker-Gitlab(Gitlab-Runner,docker-compose), docker registry, springboot-jar 배포
+  - Docker-Gitlab(Gitlab-Runner,docker-compose), docker registry, springboot-jar 배포 (해당기술로 CI/CD예정)
 
 ## 기능(개발완료)
 - 회원가입, 로그아웃
