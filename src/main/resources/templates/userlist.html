@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>앱 사용자 명단</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <th:block th:each="data:${datas}">
+    <span th:text="${data}"></span><br>
+  </th:block>
+
+  <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/user.js"></script>
+</body>
+</html>

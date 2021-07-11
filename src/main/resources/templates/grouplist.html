@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그룹리스트</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/grouplist.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:8080/group/list">Alimi <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <span style="cursor:pointer" class="nav-link" onclick=userLogout()>로그아웃</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="modal" data-target="#createStudyGroupModal">스터디그룹만들기</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        내 정보
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">정보변경1</a>
+                        <a class="dropdown-item" href="#">정보변경2</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" th:action="@{/group(page=0)}" method="get">
+                <div class="form-group mx-sm-3 mb-2">
+                    <input class="form-control mr-sm-2" type="text" id="keyword" name="keyword" th:value="${param.keyword}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="container-fluid p-0">
+            <h1 class="h3 mb-3">모여라 Home</h1>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <div class="dropdown show">
+                                    <a href="#" data-toggle="dropdown" data-display="static">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 class="card-title mb-0">게시글목록</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped" style="width:100%" >
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <!--<th>카테고리명</th>-->
+                                        <th>스터디명</th>
+                                        <th>그룹장</th>
+                                        <th>스터디시작일</th>
+                                        <th>모집상태</th>
+                                        <!--<th>삭제</th>-->
+                                    </tr>
+                                </thead>
+                                <!--<tbody id="listContainer">-->
+                                    <tr th:each="group:${studyGroupList}">
+                                        <td><img src="https://bootdey.com/img/Content/avatar/avatar1.png" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                        <!--<td th:text="${group.category.name}"></td>-->
+                                        <td th:text="${group.name}"></td>
+                                        <td th:text="${group.master}"></td>
+                                        <td th:text="${group.createDate}"></td>
+                                        <td><span class="badge bg-success">모집중</span></td>
+                                        <td><button th:id="${group.id}" onclick=deleteStudyGroup(this.id)>삭제</button></td>
+                                    </tr>
+                                <!--</tbody>-->
+                            </table>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" th:href="@{/group(page=${startPage})}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:each="num:${#numbers.sequence(startPage, endPage)}">
+                                        <a class="page-link" href="#" th:href="@{/group(page=${num},keyword=${param.keyword})}" th:text="${num}"></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" th:href="@{/group(page=${endPage})}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <div class="dropdown show">
+                                    <a href="#" data-toggle="dropdown" data-display="static">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 class="card-title mb-0">스터디목록</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>스터디명</th>
+                                    <th>그룹장</th>
+                                    <th>스터디시작일</th>
+                                    <th>모집상태</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><img src="https://bootdey.com/img/Content/avatar/avatar1.png" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                    <td>머슬스터디!</td>
+                                    <td>김종국</td>
+                                    <td>2021-07-05</td>
+                                    <td><span class="badge bg-success">모집중</span></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="https://bootdey.com/img/Content/avatar/avatar2.png" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                    <td>수다스터디~</td>
+                                    <td>유재석</td>
+                                    <td>2021-07-01</td>
+                                    <td><span class="badge bg-danger">모집완료</span></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="https://bootdey.com/img/Content/avatar/avatar5.png" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                    <td>소매치기스터디^^</td>
+                                    <td>홍길동</td>
+                                    <td>2021-06-10</td>
+                                    <td><span class="badge bg-warning">모집일시중단</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row g-0">
+                                <div class="col-sm-9 col-xl-12 col-xxl-9">
+                                    <strong>스터디 취지</strong>
+                                    <p>이두근육을 효과적으로 조지기 목적으로 모이는 그룹입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="createStudyGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">스터디그룹</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <label for="studyGroupName">스터디그룹명: </label>
+                        <input type="text" id="studyGroupName" name="studyGroupName" placeholder="스터디그룹명">
+                    </p>
+                    <p>
+                        <label for="studyMaster">스터디그룹명: </label>
+                        <input type="text" id="studyMaster" name="studyGroupMaster" placeholder="스터디장">
+                    </p>
+                    <p>
+                        <label for="studyCategory-select">스터디카테고리설정 : </label>
+                        <select name="studyGroupCategory" id="studyCategory-select">
+                            <option value="외국어" selected>외국어</option>
+                            <option value="건강">건강</option>
+                            <option value="IT">IT</option>
+                        </select>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" onclick=createStudyGroup()>스터디그룹생성</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/grouplist.js"></script>
+</body>
+</html>
