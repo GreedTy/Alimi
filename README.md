@@ -26,8 +26,9 @@
 ### 테스트
 <img width="325" alt="스크린샷 2021-07-11 오후 5 14 35" src="https://user-images.githubusercontent.com/35190067/125187770-292b9700-e26c-11eb-9bea-67f2f9c6ee4d.png">
 
-### ERD 
+## ERD 
 <img width="730" alt="스크린샷 2021-07-11 오후 5 15 53" src="https://user-images.githubusercontent.com/35190067/125187794-56784500-e26c-11eb-9b12-578f99d458a4.png">
+
 - account 회원
 - study_group 스터디그룹
   - study_group_membere 스터디-회원 N:N관계 해소 테이블
@@ -38,6 +39,5 @@
 
 ## UI
 <img width="1283" alt="스크린샷 2021-07-11 오후 5 31 42" src="https://user-images.githubusercontent.com/35190067/125188260-3a75a300-e26e-11eb-8eb5-3118376662e8.png">
-
 <img width="1165" alt="스크린샷 2021-07-11 오후 5 32 02" src="https://user-images.githubusercontent.com/35190067/125188277-4497a180-e26e-11eb-9d09-17856ab91692.png">
 
